@@ -1,4 +1,4 @@
-Sure, here's the `README.md` file in English:
+Понял, давайте попробуем еще раз, чтобы структура не ломалась.
 
 ```markdown
 # RediShop
@@ -9,33 +9,33 @@ RediShop is a web application for managing an online store, developed using Fast
 
 ```
 backend/
-    ├── app/
-    │   ├── api/
-    │   │   ├── auth.py
-    │   │   ├── products.py
-    │   │   ├── user.py
-    │   │   └── cart.py
-    │   ├── database/
-    │   │   ├── database.py
-    │   │   ├── models.py
-    │   │   └── crud.py
-    │   ├── routers/
-    │   │   └── main_routes.py
-    │   ├── services/
-    │   │   └── product_service.py
-    │   ├── utils/
-    │   │   └── auth.py
-    │   ├── schemas/
-    │   │   └── schemas.py
-    │   ├── main.py
+└── app/
+    ├── api/
+    │   ├── auth.py
+    │   ├── products.py
+    │   ├── user.py
+    │   └── cart.py
+    ├── database/
+    │   ├── database.py
+    │   ├── models.py
+    │   └── crud.py
+    ├── routers/
+    │   └── main_routes.py
+    ├── services/
+    │   └── product_service.py
+    ├── utils/
+    │   └── auth.py
+    ├── schemas/
+    │   └── schemas.py
+    └── main.py
 frontend/
-    ├── static/
-    ├── templates/
-    │   ├── base.html
-    │   ├── index.html
-    │   ├── login.html
-    │   ├── register.html
-    │   └── user_profile.html
+└── templates/
+    ├── base.html
+    ├── index.html
+    ├── login.html
+    ├── register.html
+    └── user_profile.html
+└── static/
 ```
 
 ## Installation and Setup
@@ -134,5 +134,3 @@ Contains HTML templates for rendering pages.
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 ```
-
-This `README.md` file describes the main aspects of your project, including the project structure, installation and setup instructions, as well as the main routes and their purposes. You can further customize it to include additional details if needed.
