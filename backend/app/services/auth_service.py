@@ -1,8 +1,10 @@
 from passlib.context import CryptContext
-from app.models.user import User
-from app.schemas.user import UserCreate
+from backend.app.models.user import User
+from backend.app.schemas.user import UserCreate
 from datetime import datetime
 from typing import Optional
+from backend.app.services.user_service import get_user_by_email
+
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -20,11 +22,9 @@ def create_user(user: UserCreate):
         name=user.name,
         birth_date=user.birth_date
     )
-    # Сохранение db_user в базу данных
     return db_user
 
 def authenticate_user(email: str, password: str) -> Optional[User]:
-    # Получить пользователя из базы данных по email
     db_user = get_user_by_email(email)
     if db_user and verify_password(password, db_user.hashed_password):
         return db_user

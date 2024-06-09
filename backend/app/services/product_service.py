@@ -1,6 +1,6 @@
 from typing import List, Optional
-from app.models.product import Product
-from app.schemas.product import ProductCreate, ProductUpdate
+from backend.app.models.product import Product
+from backend.app.schemas.product import ProductCreate, ProductUpdate
 from pymongo import MongoClient
 
 # Инициализируем клиент MongoDB и выбираем базу данных и коллекцию

@@ -1,6 +1,8 @@
+from typing import List  # Добавлен импорт
+
 from fastapi import APIRouter, Depends, HTTPException
-from app.schemas.product import ProductCreate, ProductUpdate, ProductResponse
-from app.services.product_service import create_product, get_product, update_product, delete_product, get_products
+from backend.app.schemas.product import ProductCreate, ProductUpdate, ProductResponse
+from backend.app.services.product_service import create_product, get_product, update_product, delete_product, get_products
 
 router = APIRouter()
 

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from app.schemas.user import UserCreate, UserLogin, UserResponse
-from app.services.auth_service import create_user, authenticate_user
+from backend.app.schemas.user import UserCreate, UserLogin, UserResponse
+from backend.app.services.auth_service import create_user, authenticate_user
 from fastapi.security import OAuth2PasswordRequestForm
 
 router = APIRouter()

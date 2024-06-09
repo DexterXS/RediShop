@@ -1,7 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
-from app.schemas.cart import CartItemCreate, CartItemResponse
-from app.services.cart_service import add_to_cart, get_cart_items, remove_from_cart
-from app.utils.auth import get_current_user
+from typing import List  # Добавлен импорт
+from backend.app.schemas.cart import CartItemCreate, CartItemResponse
+from backend.app.services.cart_service import add_to_cart, get_cart_items, remove_from_cart
+from backend.app.utils.auth import get_current_user
+from backend.app.schemas.user import UserResponse  # Добавлен импорт
 
 router = APIRouter()
 
@@ -9,7 +11,7 @@ router = APIRouter()
 def add_item_to_cart(cart_item: CartItemCreate, current_user: UserResponse = Depends(get_current_user)):
     return add_to_cart(current_user.email, cart_item)
 
-@router.get("/", response_model=list[CartItemResponse])
+@router.get("/", response_model=List[CartItemResponse])
 def read_cart_items(current_user: UserResponse = Depends(get_current_user)):
     return get_cart_items(current_user.email)
 

@@ -1,16 +1,129 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .registration-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .registration-form {
+            background-color: #f8f8f8;
+            padding: 24px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            transform: scale(1.2);
+        }
+        .registration-form h2 {
+            text-align: center;
+            font-size: 1.2em;
+        }
+        .registration-form table {
+            margin: 0 auto;
+            font-size: 1.2em;
+        }
+        .registration-form label, .registration-form input {
+            font-size: 1.2em;
+        }
+        .register-button {
+            display: block;
+            width: 100%;
+            margin-top: 20px;
+            padding: 10px;
+            font-size: 1.2em;
+        }
+        .error-message {
+            color: red;
+            text-align: center;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <div class="registration-container">
+        <div class="registration-form">
+            <h2>Registration</h2>
+            <form id="registerForm">
+                <table>
+                    <tr>
+                        <td><label for="first_name">First Name</label></td>
+                        <td><input type="text" id="first_name" name="first_name" required pattern="[A-Za-z]{2,20}"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="last_name">Last Name</label></td>
+                        <td><input type="text" id="last_name" name="last_name" required pattern="[A-Za-z]{2,20}"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="email">Email</label></td>
+                        <td><input type="email" id="email" name="email" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="password">Password</label></td>
+                        <td><input type="password" id="password" name="password" required minlength="8" maxlength="20"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="confirm_password">Confirm Password</label></td>
+                        <td><input type="password" id="confirm_password" name="confirm_password" required minlength="8" maxlength="20"></td>
+                    </tr>
+                    <tr>
+                        <td><label for="birth_date">Birth Date</label></td>
+                        <td><input type="date" id="birth_date" name="birth_date" required></td>
+                    </tr>
+                    <tr>
+                        <td><label for="address">Address</label></td>
+                        <td><input type="text" id="address" name="address" required></td>
+                    </tr>
+                </table>
+                <button type="submit" class="register-button">Register</button>
+                <div id="errorMessage" class="error-message"></div>
+            </form>
+        </div>
+    </div>
+    {% include 'footer.html' %}
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+            const data = {};
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
 
-{% block content %}
-<h1>Register</h1>
-<form action="{{ url_for('register') }}" method="post">
-    <label for="email">Email:</label>
-    <input type="email" id="email" name="email" required>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" required>
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required>
-    <label for="birth_date">Birth Date:</label>
-    <input type="date" id="birth_date" name="birth_date" required>
-    <button type="submit">Register</button>
-</form>
-{% endblock %}
+            // Валидация даты рождения
+            const birthDate = new Date(data.birth_date);
+            const today = new Date();
+            const sixteenYearsAgo = new Date(today.getFullYear() - 16, today.getMonth(), today.getDate());
+            const hundredTwentyYearsAgo = new Date(today.getFullYear() - 120, today.getMonth(), today.getDate());
+
+            if (birthDate < hundredTwentyYearsAgo || birthDate > sixteenYearsAgo) {
+                document.getElementById('errorMessage').innerText = "Please enter a valid birth date. Age must be between 16 and 120 years.";
+                return;
+            }
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                if (response.ok) {
+                    window.location.href = '/profile';
+                } else {
+                    const errorData = await response.json();
+                    document.getElementById('errorMessage').innerText = errorData.detail;
+                }
+            } catch (error) {
+                document.getElementById('errorMessage').innerText = "Error submitting data. Please try again.";
+            }
+        });
+    </script>
+</body>
+</html>

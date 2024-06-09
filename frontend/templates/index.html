@@ -1,15 +1,19 @@
-{% extends "base.html" %}
-
-{% block content %}
-<h1>Welcome to My Shop</h1>
-<div class="product-grid">
-    <!-- Пример товара -->
-    {% for product in products %}
-    <div class="product-tile">
-        <img src="{{ product.images[0] if product.images else url_for('static', filename='images/default.png') }}" alt="{{ product.name }}">
-        <h2>{{ product.name }}</h2>
-        <p>{{ product.price }} + {{ product.shipping_cost }} shipping</p>
-    </div>
-    {% endfor %}
-</div>
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RediShop</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    {% include 'header.html' %}
+    <main>
+        <div class="product-grid">
+            <!-- Products will be appended here -->
+        </div>
+    </main>
+    <script src="/static/js/app.js"></script>
+    {% include 'footer.html' %}
+</body>
+</html>

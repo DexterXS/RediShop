@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
-from app.schemas.user import UserUpdate, UserResponse
-from app.services.user_service import get_user, update_user
-from app.utils.auth import get_current_user
+from backend.app.schemas.user import UserUpdate, UserResponse
+from backend.app.services.user_service import get_user, update_user
+from backend.app.utils.auth import get_current_user
 
 router = APIRouter()
 

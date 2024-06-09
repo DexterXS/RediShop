@@ -23,4 +23,4 @@ class UserResponse(BaseModel):
     birth_date: datetime
     address: Optional[str] = None
     class Config:
-        orm_mode = True
+        from_attributes = True
