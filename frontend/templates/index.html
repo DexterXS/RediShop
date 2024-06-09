@@ -6,6 +6,10 @@
     <title>RediShop</title>
     <link rel="stylesheet" href="/static/css/style.css">
     <style>
+        .container {
+            width: 60%;
+            margin: auto;
+        }
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -15,17 +19,27 @@
         .product {
             border: 1px solid #ddd;
             border-radius: 5px;
-            padding: 10px;
-            text-align: center;
+            overflow: hidden; /* Добавлено для обрезки содержимого */
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         .product img {
             max-width: 100%;
             height: auto;
+            max-height: 150px; /* Задайте максимальную высоту для изображений */
+            object-fit: cover; /* Обрезка изображений, если они выходят за пределы */
+            margin: auto; /* Центровка изображения */
         }
-        .product h3 {
-            font-size: 1.5em;
+        .product-details {
+            padding: 10px;
+            text-align: center;
         }
-        .product p {
+        .product-details h3 {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        .product-details p {
             margin: 10px 0;
         }
         .quantity-selector {
@@ -35,14 +49,20 @@
             margin: 10px 0;
         }
         .quantity-selector button {
-            padding: 5px 10px;
-            font-size: 1em;
+            height: 36px; /* Задайте нужную высоту кнопок */
+            width: 36px; /* Задайте ширину кнопок */
+            font-size: 16px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            cursor: pointer;
         }
         .quantity-selector input {
-            width: 40px;
+            height: 36px; /* Задайте ту же высоту, что и у кнопок */
+            width: 50px; /* Задайте ширину поля */
             text-align: center;
-            margin: 0 10px;
-            font-size: 1em;
+            border: 1px solid #ccc;
+            margin: 0 5px; /* Задайте отступы между элементами */
+            font-size: 16px;
         }
         .no-products {
             border: 1px solid #ddd;

@@ -26,7 +26,8 @@
             display: flex;
             flex-direction: column;
         }
-        .profile-section form input {
+        .profile-section form input,
+        .profile-section form textarea {
             margin-bottom: 10px;
             padding: 10px;
             font-size: 1em;
@@ -109,7 +110,8 @@
                 <input type="text" name="name" placeholder="Product Name" required>
                 <input type="number" name="quantity" placeholder="Quantity" required>
                 <input type="number" name="price" step="0.01" placeholder="Product Price" required>
-                <input type="file" name="image" accept="image/*">
+                <textarea name="description" placeholder="Description" required></textarea>
+                <input type="file" name="image" accept="image/*" required>
                 <button type="submit">Add Product</button>
             </form>
         </div>
@@ -145,5 +147,6 @@
         </div>
     </div>
     {% include 'footer.html' %}
+    <script src="/static/js/app.js"></script>
 </body>
 </html>

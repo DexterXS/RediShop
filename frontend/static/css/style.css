@@ -74,3 +74,25 @@ main {
     border: 1px solid black;
     cursor: pointer;
 }
+
+.quantity-selector {
+    display: flex;
+    align-items: center;
+}
+
+.quantity-selector button {
+    height: 36px; /* Задайте нужную высоту кнопок */
+    width: 36px; /* Задайте ширину кнопок */
+    font-size: 16px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.quantity-selector input {
+    height: 36px; /* Задайте ту же высоту, что и у кнопок */
+    width: 50px; /* Задайте ширину поля */
+    text-align: center;
+    border: 1px solid #ccc;
+    margin: 0 5px; /* Задайте отступы между элементами */
+}

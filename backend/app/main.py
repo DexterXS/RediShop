@@ -1,5 +1,6 @@
 import sys
 import os
+import uuid
 import logging
 from fastapi import FastAPI, Request, Form, Depends, HTTPException, UploadFile, File
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
@@ -19,8 +20,8 @@ current_path = os.path.dirname(os.path.abspath(__file__))
 root_path = os.path.abspath(os.path.join(current_path, ".."))
 sys.path.append(root_path)
 
-# Директория для хранения загруженных изображений
-UPLOAD_DIRECTORY = "uploaded_images"
+# Обновление пути для загруженных изображений
+UPLOAD_DIRECTORY = "frontend/static/uploaded_images"
 os.makedirs(UPLOAD_DIRECTORY, exist_ok=True)
 
 # Импортируем модули из backend.app.api
@@ -154,21 +155,32 @@ async def get_cart(request: Request, db: Session = Depends(get_db)):
 
 @app.post("/add_product")
 async def add_product_endpoint(name: str = Form(...), quantity: int = Form(...), price: float = Form(...),
-                               image: UploadFile = File(...), db: Session = Depends(get_db)):
-    # Сохранение изображения на сервере
-    image_path = os.path.join(UPLOAD_DIRECTORY, image.filename)
+                               image: UploadFile = File(...), description: str = Form(...),
+                               db: Session = Depends(get_db)):
+    # Убедитесь, что директория для сохранения изображений существует
+    if not os.path.exists(UPLOAD_DIRECTORY):
+        os.makedirs(UPLOAD_DIRECTORY)
+
+    # Получение расширения файла изображения
+    file_extension = os.path.splitext(image.filename)[1]
+    # Создание уникального имени файла
+    unique_filename = f"{uuid.uuid4()}{file_extension}"
+    # Путь для сохранения изображения
+    image_path = os.path.join(UPLOAD_DIRECTORY, unique_filename)
     with open(image_path, "wb") as buffer:
         buffer.write(await image.read())
 
     user_id = 1  # Замените это на фактический ID пользователя, например, из сессии или токена
-    add_product(db, user_id, name, quantity, price, image_path)
+    relative_image_path = os.path.join("uploaded_images", unique_filename)
+    add_product(db, user_id, name, description, int(price), relative_image_path, quantity)
     return RedirectResponse(url="/profile", status_code=302)
 
 
 @app.get("/products", response_class=JSONResponse)
 async def get_products_endpoint(db: Session = Depends(get_db)):
     products = get_products(db)
-    return JSONResponse(content=products)
+    products_json = [{"id": p.id, "name": p.name, "price": p.price, "image_path": p.image_path, "description": p.description} for p in products]
+    return JSONResponse(content=products_json)
 
 
 @app.post("/add_to_cart")

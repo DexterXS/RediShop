@@ -19,10 +19,12 @@ class Product(Base):
     __tablename__ = "products"
 
     id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(Integer, ForeignKey("users.id"))
     name = Column(String, index=True)
     description = Column(String, index=True)
     price = Column(Integer)
     image_path = Column(String)
+    quantity = Column(Integer)
 
     cart_items = relationship("CartItem", back_populates="product")
 

@@ -36,17 +36,20 @@ def get_cart_items(db: Session, user_id: int):
 from backend.app.database.models import Product, CartItem
 
 
-def add_product(db: Session, user_id: int, name: str, quantity: int, price: float, image_path: str):
-    product = Product(name=name, price=price, image_path=image_path)
-    db.add(product)
+def add_product(db: Session, user_id: int, name: str, description: str, price: int, image_path: str, quantity: int):
+    db_product = Product(
+        user_id=user_id,
+        name=name,
+        description=description,
+        price=price,
+        image_path=image_path,
+        quantity=quantity
+    )
+    db.add(db_product)
     db.commit()
-    db.refresh(product)
+    db.refresh(db_product)
+    return db_product
 
-    # Создаем элемент корзины для добавленного продукта
-    cart_item = CartItem(user_id=user_id, product_id=product.id, quantity=quantity)
-    db.add(cart_item)
-    db.commit()
-    db.refresh(cart_item)
 
 
 def get_products(db: Session):
