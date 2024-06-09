@@ -14,34 +14,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         function displayProducts(products) {
-    const productGrid = document.getElementById('productGrid');
-    const noProductsMessage = document.getElementById('noProductsMessage');
-    productGrid.innerHTML = '';
-    if (products.length === 0) {
-        noProductsMessage.style.display = 'block';
-    } else {
-        noProductsMessage.style.display = 'none';
-        products.forEach(product => {
-            const productDiv = document.createElement('div');
-            productDiv.classList.add('product');
-            productDiv.innerHTML = `
-                <img src="/static/${product.image_path}" alt="${product.name}">
-                <div class="product-details">
-                    <h3>${product.name}</h3>
-                    <p>Price: $${product.price}</p>
-                    <div class="quantity-selector">
-                        <button onclick="changeQuantity(this, -1)">-</button>
-                        <input type="number" value="1" min="1" max="99" readonly>
-                        <button onclick="changeQuantity(this, 1)">+</button>
-                    </div>
-                    <button onclick="addToCart(${product.id}, this)">Buy</button>
-                </div>
-            `;
-            productGrid.appendChild(productDiv);
-        });
-    }
-}
-
+            productGrid.innerHTML = '';
+            if (products.length === 0) {
+                noProductsMessage.style.display = 'block';
+            } else {
+                noProductsMessage.style.display = 'none';
+                products.forEach(product => {
+                    const productDiv = document.createElement('div');
+                    productDiv.classList.add('product');
+                    productDiv.innerHTML = `
+                        <img src="/static/${product.image_path}" alt="${product.name}">
+                        <div class="product-details">
+                            <h3>${product.name}</h3>
+                            <p>Price: &euro;${product.price}</p>
+                            <div class="quantity-selector">
+                                <button onclick="changeQuantity(this, -1)">-</button>
+                                <input type="number" value="1" min="1" max="99" readonly>
+                                <button onclick="changeQuantity(this, 1)">+</button>
+                            </div>
+                            <button onclick="addToCart(${product.id}, this)">Buy</button>
+                        </div>
+                    `;
+                    productGrid.appendChild(productDiv);
+                });
+            }
+        }
 
         function changeQuantity(button, change) {
             const input = button.parentElement.querySelector('input');
