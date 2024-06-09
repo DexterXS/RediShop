@@ -5,12 +5,144 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile</title>
     <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .profile-container {
+            width: 80%;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .profile-section {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .profile-section h3 {
+            margin-bottom: 10px;
+        }
+        .profile-section form {
+            display: flex;
+            flex-direction: column;
+        }
+        .profile-section form input {
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 1em;
+        }
+        .profile-section form button {
+            padding: 10px;
+            font-size: 1em;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .profile-section form button:hover {
+            background-color: #45a049;
+        }
+        .logout-button {
+            padding: 10px;
+            font-size: 1em;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .logout-button:hover {
+            background-color: #da190b;
+        }
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .product-table th, .product-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .product-table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+        .product-table td button {
+            padding: 5px 10px;
+            font-size: 0.9em;
+            background-color: #f44336;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .product-table td button:hover {
+            background-color: #da190b;
+        }
+    </style>
 </head>
 <body>
     {% include 'header.html' %}
     <div class="profile-container">
-        <h2>Welcome, {{ user_name }}</h2>
-        <!-- Add profile information and functionality here -->
+        <div class="profile-section">
+            <h3>Change Password</h3>
+            <form id="changePasswordForm">
+                <input type="password" placeholder="Old Password" required>
+                <input type="password" placeholder="New Password" required>
+                <input type="password" placeholder="Confirm New Password" required>
+                <button type="submit">Change Password</button>
+            </form>
+        </div>
+
+        <div class="profile-section">
+            <h3>Change Address</h3>
+            <p>{{ user_address if user_address else "Address not available" }}</p>
+            <form id="changeAddressForm">
+                <input type="text" placeholder="New Address" required>
+                <button type="submit">Change Address</button>
+            </form>
+        </div>
+
+        <div class="profile-section">
+            <h3>Add Product</h3>
+            <form id="addProductForm" enctype="multipart/form-data" method="post" action="/add_product">
+                <input type="text" name="name" placeholder="Product Name" required>
+                <input type="number" name="quantity" placeholder="Quantity" required>
+                <input type="number" name="price" step="0.01" placeholder="Product Price" required>
+                <input type="file" name="image" accept="image/*">
+                <button type="submit">Add Product</button>
+            </form>
+        </div>
+
+        <div class="profile-section">
+            <h3>Your Products</h3>
+            <table class="product-table">
+                <tr>
+                    <th>#</th>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+                {% if user_products %}
+                    {% for product in user_products %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.price }}</td>
+                        <td><button>Delete</button></td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="4">No products</td>
+                    </tr>
+                {% endif %}
+            </table>
+        </div>
+
+        <div class="profile-section">
+            <button class="logout-button">Logout</button>
+        </div>
     </div>
     {% include 'footer.html' %}
 </body>

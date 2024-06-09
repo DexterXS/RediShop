@@ -5,15 +5,72 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RediShop</title>
     <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .product {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            text-align: center;
+        }
+        .product img {
+            max-width: 100%;
+            height: auto;
+        }
+        .product h3 {
+            font-size: 1.5em;
+        }
+        .product p {
+            margin: 10px 0;
+        }
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        .quantity-selector button {
+            padding: 5px 10px;
+            font-size: 1em;
+        }
+        .quantity-selector input {
+            width: 40px;
+            text-align: center;
+            margin: 0 10px;
+            font-size: 1em;
+        }
+        .no-products {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            text-align: center;
+            color: black;
+            background-color: white;
+        }
+    </style>
 </head>
 <body>
     {% include 'header.html' %}
-    <main>
-        <div class="product-grid">
-            <!-- Products will be appended here -->
+    <div class="container">
+        <h1>Products</h1>
+        <div class="sort-container">
+            <label for="sortPrice">Sort by Price:</label>
+            <select id="sortPrice">
+                <option value="asc">Low to High</option>
+                <option value="desc">High to Low</option>
+            </select>
         </div>
-    </main>
-    <script src="/static/js/app.js"></script>
+        <div id="noProductsMessage" class="no-products" style="display:none;">No products available</div>
+        <div id="productGrid" class="product-grid">
+            <!-- Products will be loaded here by JavaScript -->
+        </div>
+    </div>
     {% include 'footer.html' %}
+    <script src="/static/js/app.js"></script>
 </body>
 </html>

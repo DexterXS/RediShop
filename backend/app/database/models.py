@@ -22,6 +22,7 @@ class Product(Base):
     name = Column(String, index=True)
     description = Column(String, index=True)
     price = Column(Integer)
+    image_path = Column(String)
 
     cart_items = relationship("CartItem", back_populates="product")
 

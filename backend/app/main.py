@@ -1,8 +1,8 @@
 import sys
 import os
 import logging
-from fastapi import FastAPI, Request, Form, Depends, HTTPException
-from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi import FastAPI, Request, Form, Depends, HTTPException, UploadFile, File
+from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,12 +10,18 @@ from sqlalchemy.orm import Session
 from pydantic import BaseModel, EmailStr, validator
 from backend.app.database.database import SessionLocal, init_db
 from backend.app.database.crud import get_user_by_email, create_user, verify_password, pwd_context
-from backend.app.schemas.schemas import UserCreate  # Импортируем схемы
+from backend.app.schemas.schemas import UserCreate
+from backend.app.database.crud import get_cart_items
+from backend.app.database.crud import get_products, add_product, add_to_cart, get_cart_count
 
 # Добавление корневого пути в sys.path
 current_path = os.path.dirname(os.path.abspath(__file__))
 root_path = os.path.abspath(os.path.join(current_path, ".."))
 sys.path.append(root_path)
+
+# Директория для хранения загруженных изображений
+UPLOAD_DIRECTORY = "uploaded_images"
+os.makedirs(UPLOAD_DIRECTORY, exist_ok=True)
 
 # Импортируем модули из backend.app.api
 from backend.app.api import auth, products, user, cart
@@ -129,3 +135,50 @@ async def login_user(
     logger.info(f"User {username} logged in successfully")
     # Если логин прошел успешно, перенаправляем на страницу профиля
     return RedirectResponse(url="/profile", status_code=302)
+
+
+@app.get("/cart", response_class=HTMLResponse)
+async def get_cart(request: Request, db: Session = Depends(get_db)):
+    user_id = 1  # Замените это на фактический ID пользователя, например, из сессии или токена
+    cart_items = get_cart_items(db, user_id)
+    cart_total = sum(item.product.price * item.quantity for item in cart_items)
+    cart_count = len(set(item.product_id for item in cart_items))
+
+    return templates.TemplateResponse("cart.html", {
+        "request": request,
+        "cart_items": cart_items,
+        "cart_total": cart_total,
+        "cart_count": cart_count
+    })
+
+
+@app.post("/add_product")
+async def add_product_endpoint(name: str = Form(...), quantity: int = Form(...), price: float = Form(...),
+                               image: UploadFile = File(...), db: Session = Depends(get_db)):
+    # Сохранение изображения на сервере
+    image_path = os.path.join(UPLOAD_DIRECTORY, image.filename)
+    with open(image_path, "wb") as buffer:
+        buffer.write(await image.read())
+
+    user_id = 1  # Замените это на фактический ID пользователя, например, из сессии или токена
+    add_product(db, user_id, name, quantity, price, image_path)
+    return RedirectResponse(url="/profile", status_code=302)
+
+
+@app.get("/products", response_class=JSONResponse)
+async def get_products_endpoint(db: Session = Depends(get_db)):
+    products = get_products(db)
+    return JSONResponse(content=products)
+
+
+@app.post("/add_to_cart")
+async def add_to_cart_endpoint(productId: int = Form(...), quantity: int = Form(...), db: Session = Depends(get_db)):
+    user_id = 1  # Замените это на фактический ID пользователя, например, из сессии или токена
+    add_to_cart(db, user_id, productId, quantity)
+    return JSONResponse(content={"status": "success"})
+
+@app.get("/cart_count", response_class=JSONResponse)
+async def get_cart_count_endpoint(db: Session = Depends(get_db)):
+    user_id = 1  # Замените это на фактический ID пользователя, например, из сессии или токена
+    count = get_cart_count(db, user_id)
+    return JSONResponse(content=count)

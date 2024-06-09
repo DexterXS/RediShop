@@ -58,7 +58,7 @@
     <div class="login-container">
         <div class="login-form">
             <h2>Login</h2>
-            <form id="loginForm">
+            <form id="loginForm" method="POST" action="/login">
                 <table>
                     <tr>
                         <td><label for="email">Email</label></td>
@@ -79,5 +79,6 @@
         </div>
     </div>
     {% include 'footer.html' %}
+    <script src="/static/js/app.js"></script>
 </body>
 </html>

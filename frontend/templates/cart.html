@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shopping Cart</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+    <style>
+        .cart-container {
+            width: 80%;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .cart-section {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .cart-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .cart-table th, .cart-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+        }
+        .cart-table th {
+            padding-top: 12px;
+            padding-bottom: 12px;
+            text-align: left;
+            background-color: #4CAF50;
+            color: white;
+        }
+        .total-price {
+            text-align: right;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    {% include 'header.html' %}
+    <div class="cart-container">
+        <div class="cart-section">
+            <h3>Your Cart</h3>
+            <table class="cart-table">
+                <tr>
+                    <th>#</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Total Price</th>
+                </tr>
+                {% if cart_items %}
+                    {% for item in cart_items %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.total_price }}</td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="4">No products</td>
+                    </tr>
+                {% endif %}
+            </table>
+            <div class="total-price">
+                Total: ${{ cart_total }}
+            </div>
+        </div>
+    </div>
+    {% include 'footer.html' %}
+</body>
+</html>
