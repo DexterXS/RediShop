@@ -5,38 +5,6 @@
 
 RediShop is a web application for managing an online store, developed using FastAPI for the backend and Jinja2 for template rendering.
 
-## Project Structure
-
-```
-backend/
-└── app/
-    ├── api/
-    │   ├── auth.py
-    │   ├── products.py
-    │   ├── user.py
-    │   └── cart.py
-    ├── database/
-    │   ├── database.py
-    │   ├── models.py
-    │   └── crud.py
-    ├── routers/
-    │   └── main_routes.py
-    ├── services/
-    │   └── product_service.py
-    ├── utils/
-    │   └── auth.py
-    ├── schemas/
-    │   └── schemas.py
-    └── main.py
-frontend/
-└── templates/
-    ├── base.html
-    ├── index.html
-    ├── login.html
-    ├── register.html
-    └── user_profile.html
-└── static/
-```
 
 ## Installation and Setup
 
